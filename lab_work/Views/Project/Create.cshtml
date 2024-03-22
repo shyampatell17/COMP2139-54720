@@ -1,0 +1,74 @@
+﻿@model Project  // specifies an empty project
+@{
+    ViewData["Title"] = "Create Project";
+}
+
+
+<div class="card shadow border-0 mt-4">
+    <div class="card header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Create Project</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-floating py-2 col-12">
+                <input asp-for="Name" class="form-control border-0 shadow" />
+                <label asp-for="Name" class="ms-2"></label>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating py-2 col-12">
+                <input asp-for="Description" class="form-control border-0 shadow" />
+                <label asp-for="Description" class="ms-2"></label>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating py-2 col-12">
+                <input asp-for="StartDate" class="form-control border-0 shadow" />
+                <label asp-for="StartDate" type="date" class="ms-2"></label>
+            </div>
+
+            <div class="form-floating py-2 col-12">
+                <input asp-for="EndDate" class="form-control border-0 shadow" />
+                <label asp-for="EndDate" type="date" class="ms-2"></label>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Status" class="ms-2"></label>
+                <select asp-for="Status" class="form-control border-0 mb-4 shadow">
+                    <option value="">Select a Status</option>
+                    <option value="New">New</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Complete">Complete</option>
+                </select>
+            </div>
+
+
+            <div class="row">
+                <div class="col-6 col-md-3">
+                    <button type="submit" value="Create" class="btn btn-primary form-control">Create</button>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a asp-controller="Project" asp-action="Index" class="btn btn-outline-warning border form-control">
+                        Cancle
+                    </a>
+                </div>
+            </div>
+
+        </form>
+
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
