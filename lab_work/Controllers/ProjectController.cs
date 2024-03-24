@@ -181,6 +181,25 @@ namespace lab_work.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet("Search")]
+        // [HttpGet("Search/{searchString?}")]
+        public async Task<IActionResult> Search(string searchString)
+        {
+            var projectQuery = from p in _db.Projects
+                               select p;
+
+            bool searchPerformed = !string.IsNullOrEmpty(searchString);
+            if (searchPerformed)
+            {
+                projectQuery = projectQuery.Where(p => p.Name.Contains(searchString)
+                                                       || p.Description.Contains(searchString));
+            }
+
+            var projects = await projectQuery.ToListAsync();
+            ViewData["SearchPerformed"] = searchPerformed;
+            ViewData["SearchString"] = searchString;
+            return View("Index", projects);
+        }
 
         //[HttpPost]
         //public IActionResult Create(Project project)

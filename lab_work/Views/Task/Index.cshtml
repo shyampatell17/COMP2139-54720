@@ -1,43 +1,129 @@
-﻿@model IEnumerable<lab_work.Models.ProjectTask> // specifies the collection of projecttasks
-@{
-    ViewData["Title"] = "Tasks Lists";
-}
+﻿@*@model IEnumerable<lab_work.Models.ProjectTask> // Specifies the collection of Project Tasks
+    @{
+        ViewData["Title"] = "Tasks Lists";
+    }
 
-<h2>@ViewData["Title"]</h2>
+    <h2>@ViewData["Title"]</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Task Id</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Project Id</th>
-            <th>Actions</th>
-
-        </tr>
-    </thead>
-
-    <tbody>
-
-        @foreach (var task in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@task.ProjectTaskId</td>
-                <td>@task.Title</td>
-                <td>@task.Description</td>
-                <td>@task.ProjectId</td>
-                <td>
-                    <a asp-action="Details" asp-route-projectTaskId="@task.ProjectTaskId" class="btn btn-info">Details</a>
-                    <a asp-action="Edit" asp-route-projectTaskId="@task.ProjectTaskId" class="btn btn-warning">Edit</a>
-                    <a asp-action="Delete" asp-route-projectTaskId="@task.ProjectTaskId" class="btn btn-danger">Delete</a>
-                </td>
+                <th>Task Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Project Id</th>
+                <th>Actions</th>
 
             </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var task in Model)
+            {
+                <tr>
+                    <td>@task.ProjectTaskId</td>
+                    <td>@task.Title</td>
+                    <td>@task.Description</td>
+                    <td>@task.ProjectId</td>
+                    <td>
+                        <a asp-action="Details" asp-route-projectTaskId="@task.ProjectTaskId" class="btn btn-info">Details</a>
+                        <a asp-action="Edit" asp-route-projectTaskId="@task.ProjectTaskId" class="btn btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-projectTaskId="@task.ProjectTaskId" class="btn btn-danger">Delete</a>
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+     Button to create a new Task
+    <a asp-action="Create" asp-route-projectId="@ViewBag.ProjectId" class="btn btn-primary">Create New Task</a>
+    <a asp-action="Index" asp-controller="Project" class="btn btn-secondary">Back to Projects</a>*@
+
+@model IEnumerable<lab_work.Models.ProjectTask> // Specifies the collection of Project Tasks
+        @{
+            ViewData["Title"] = "Tasks Lists";
         }
 
-    </tbody>
 
-</table>
-<!-- Button to create a new Task-->
-<a asp-action="Create" asp-route-projectId="@ViewBag.ProjectId" class="btn btn-primary">Create New Task</a>
-<a asp-action="Index" asp-controller="Project" class="btn btn-secondary">Back to Projects</a>
+    <div class="card shadow border-0 mt-4">
+        <div class="card header bg-secondary bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="text-white py-2">Project List</h2>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <div class="container">
+                <div class="row pb-3">
+                    <div class="col-6">
+                    </div>
+                    <div class="col-6 text-end">
+                        <a asp-route-projectId="@ViewBag.ProjectId" asp-action="Create" class="btn btn-primary">
+                            <i class="fa-solid fa-folder-plus"></i> Create New Task
+                        </a>
+                    </div>
+                </div>
+
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Task ID
+                            </th>
+                            <th>
+                                Title
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th>
+                                Project ID
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var obj in Model.OrderBy(u => u.ProjectTaskId))
+                        {
+                            <tr>
+                                <td> @obj.ProjectTaskId </td>
+                                <td>
+                                    @obj.Title
+                                </td>
+                                <td> @obj.Description </td>
+                                <td>
+                                    @obj.ProjectId
+                                </td>
+                                <td>
+                                    <div class="w-75 btn-group" role="group">
+                                        <a asp-controller="Task" asp-action="Edit" asp-route-id="@obj.ProjectId" class="btn btn-primary mx-2">
+                                            <i class="bi bi-pencil-fill"></i> Edit
+                                        </a>
+                                        <a asp-controller="Task" asp-action="Delete" asp-route-id="@obj.ProjectId" class="btn btn-danger mx-2 border">
+                                            <i class="bi bi-trash3"></i> Delete
+                                        </a>
+                                        <a asp-controller="Task" asp-action="Details" asp-route-id="@obj.ProjectId" class="btn btn-secondary mx-2">
+                                            <i class="bi bi-pencil-fill"></i> Details
+                                        </a>
+                                        <a asp-controller="Task" asp-action="Index" asp-route-projectId="@obj.ProjectId" class="btn btn-secondary mx-2 border">
+                                            <i class="bi bi-trash3"></i> Tasks
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>

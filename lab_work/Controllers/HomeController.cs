@@ -28,6 +28,31 @@ public class HomeController : Controller
         return View();
     }
 
+    [HttpGet]
+    public IActionResult GeneralSearch(string searchType, string searchString)
+    {
+        if (searchType == "Projects")
+        {
+            return RedirectToAction("Search", "Project", new { area = "ProjectManagement", searchString });
+        }
+        else if (searchType == "Tasks")
+        {
+            //searching tasks
+            int defaultProjectId = 2;
+            return RedirectToAction("Search", "Task", new { area = "ProjectManagement", projectId = defaultProjectId, searchString });
+        }
+        return View("Index", "Home");
+    }
+
+    public IActionResult NotFound(int statusCode)
+    {
+        if (statusCode == 404)
+        {
+            return View("NotFound");
+        }
+        return View("Error");
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
