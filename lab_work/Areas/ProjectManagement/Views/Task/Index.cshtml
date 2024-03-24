@@ -42,7 +42,7 @@
     <a asp-action="Create" asp-route-projectId="@ViewBag.ProjectId" class="btn btn-primary">Create New Task</a>
     <a asp-action="Index" asp-controller="Project" class="btn btn-secondary">Back to Projects</a>*@
 
-@model IEnumerable<lab_work.Models.ProjectTask> // Specifies the collection of Project Tasks
+@model IEnumerable<lab_work.Areas.ProjectManagement.Models.ProjectTask> // Specifies the collection of Project Tasks
         @{
             ViewData["Title"] = "Tasks Lists";
         }

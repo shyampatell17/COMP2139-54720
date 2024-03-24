@@ -24,11 +24,29 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.16" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Views\Project\" />
     <None Remove="Data\" />
+    <None Remove="Areas\" />
+    <None Remove="Areas\ProjectManagement\" />
+    <None Remove="Areas\ProjectManagement\Controllers\" />
+    <None Remove="Areas\ProjectManagement\Data\" />
+    <None Remove="Areas\ProjectManagement\Models\" />
+    <None Remove="Areas\ProjectManagement\Views\" />
+    <None Remove="Areas\ProjectManagement\Views\Project\" />
+    <None Remove="Areas\ProjectManagement\Views\Task\" />
+    <None Remove="Areas\ProjectManagement\Component\" />
+    <None Remove="Areas\ProjectManagement\Component\ProjectSummary\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Project\" />
     <Folder Include="Data\" />
+    <Folder Include="Areas\" />
+    <Folder Include="Areas\ProjectManagement\" />
+    <Folder Include="Areas\ProjectManagement\Controllers\" />
+    <Folder Include="Areas\ProjectManagement\Data\" />
+    <Folder Include="Areas\ProjectManagement\Models\" />
+    <Folder Include="Areas\ProjectManagement\Views\" />
+    <Folder Include="Areas\ProjectManagement\Views\Project\" />
+    <Folder Include="Areas\ProjectManagement\Views\Task\" />
+    <Folder Include="Areas\ProjectManagement\Component\" />
+    <Folder Include="Areas\ProjectManagement\Component\ProjectSummary\" />
   </ItemGroup>
 </Project>

@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using lab_work.Data;
-using lab_work.Models;
+using lab_work.Areas.ProjectManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace lab_work.Controllers
+namespace lab_work.Areas.ProjectManagement.Controllers
 {
+
+    [Area("ProjectManagement")]
+    [Route("[area]/[controller]/[action]")]
     public class TaskController : Controller
     {
         private readonly ApplicationDbContext _db;

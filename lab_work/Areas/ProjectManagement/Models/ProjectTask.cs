@@ -1,7 +1,7 @@
-﻿using System;
+﻿ using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace lab_work.Models
+namespace lab_work.Areas.ProjectManagement.Models
 {
 	public class ProjectTask
 	{

@@ -102,6 +102,9 @@
                                 Description
                             </th>
                             <th>
+                                Summary
+                            </th>
+                            <th>
 
                             </th>
                         </tr>
@@ -113,6 +116,10 @@
                                 <td> @obj.Name </td>
                                 <td>
                                     @obj.Description
+                                </td>
+
+                                <td>
+                                    @await Component.InvokeAsync("ProjectSummary", new { projectId = project.ProjectId })
                                 </td>
                                 <td>
                                     <div class="w-75 btn-group" role="group">

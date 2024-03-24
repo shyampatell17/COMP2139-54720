@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.ConstrainedExecution;
 using Microsoft.EntityFrameworkCore;
-using lab_work.Models;
+using lab_work.Areas.ProjectManagement.Models;
 
 namespace lab_work.Data
 {
