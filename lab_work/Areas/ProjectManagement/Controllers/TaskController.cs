@@ -24,23 +24,30 @@ namespace lab_work.Areas.ProjectManagement.Controllers
             _db = db;
         }
 
-        [HttpGet]
-        public IActionResult Index(int projectId)
+        [HttpGet("Index/{projectId:int?}")]
+        public async Task<IActionResult> Index(int? projectId)
         {
-            var tasks = _db.ProjectTasks
-                .Where(task => task.ProjectId == projectId)
-                .ToList();
+            var tasksQuery = _db.ProjectTasks.AsQueryable();
 
+            if (projectId.HasValue)
+            {
+                tasksQuery = tasksQuery.Where(t => t.ProjectId == projectId);
+
+            }
+            /*var tasks = _db.ProjectTasks
+                .Where(task => task.ProjectId == projectId)
+                .ToList();*/
+            var tasks = await tasksQuery.ToListAsync();
             ViewBag.ProjectId = projectId;
             return View(tasks);
         }
 
-        [HttpGet]
-        public IActionResult Details(int id)
+        [HttpGet("Details/{projectTaskId:int}")]
+        public async Task<IActionResult> Details(int id)
         {
-            var task = _db.ProjectTasks
+            var task = await _db.ProjectTasks
                        .Include(t => t.Project)
-                       .FirstOrDefault(task => task.ProjectTaskId == id);
+                       .FirstOrDefaultAsync(task => task.ProjectTaskId == id);
             if (task == null)
             {
                 return NotFound();
@@ -48,10 +55,10 @@ namespace lab_work.Areas.ProjectManagement.Controllers
             return View(task);
         }
 
-        [HttpGet]
-        public IActionResult Create(int projectId)
+        [HttpGet("Create/{projectId:int}")]
+        public async Task<IActionResult> Create(int projectId)
         {
-            var project = _db.Projects.Find(projectId);
+            var project = await _db.Projects.FindAsync(projectId);
             if (project == null)
             {
                 return NotFound();
@@ -65,39 +72,49 @@ namespace lab_work.Areas.ProjectManagement.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("Create/{projectId:int}")]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Title", "Description", "ProjectId")] ProjectTask task)
+        public async Task<IActionResult> Create([Bind("Title", "Description", "ProjectId")] ProjectTask task)
         {
             if (ModelState.IsValid)
             {
-                _db.ProjectTasks.Add(task);
-                _db.SaveChanges();
+                await _db.ProjectTasks.AddAsync(task);
+                await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), new { projectId = task.ProjectId });
             }
+
+            //Async call to retrive projects for Select List
+            var projects = await _db.Projects.ToListAsync();
+
             ViewBag.Projects = new SelectList(_db.Projects, "ProjectId", "Name", task.ProjectId);
             return View(task);
         }
 
+        //[HttpGet("Edit/{projectTaskId:int}")]
         [HttpGet]
-        public IActionResult Edit(int projectTaskId)
+        public async Task<IActionResult> Edit(int projectTaskId)
         {
-            var task = _db.ProjectTasks
+            var task = await _db.ProjectTasks
            .Include(t => t.Project)
-           .FirstOrDefault(t => t.ProjectTaskId == projectTaskId);
+           .FirstOrDefaultAsync(t => t.ProjectTaskId == projectTaskId);
 
             if (task == null)
             {
                 return NotFound();
             }
+
+            //Async call to retrive projects for Select List
+            var projects = await _db.Projects.ToListAsync();
+
             ViewBag.Projects = new SelectList(_db.Projects, "ProjectTaskId", "Name", task.ProjectId);
             return View(task);
         }
 
 
+        //[HttpPost("Edit/{id:int}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("ProjectTaskId", "Title", "Description", "ProjectId")] ProjectTask task)
+        public async Task<IActionResult> Edit(int id, [Bind("ProjectTaskId", "Title", "Description", "ProjectId")] ProjectTask task)
         {
             if (id != task.ProjectTaskId)
             {
@@ -106,19 +123,23 @@ namespace lab_work.Areas.ProjectManagement.Controllers
             if (ModelState.IsValid)
             {
                 _db.Update(task);
-                _db.SaveChanges();
+               await _db.SaveChangesAsync();
                 return RedirectToAction("Index", new { projectId = task.ProjectId });
             }
+
+            //Async call to retrive projects for Select List
+            var projects = await _db.Projects.ToListAsync();
+
             ViewBag.Projects = new SelectList(_db.Projects, "ProjectTaskId", "Name", task.ProjectId);
             return View(task);
         }
 
-        [HttpGet]
-        public IActionResult Delete(int projectTaskId)
+        [HttpGet("Delete/{projectTaskId:int}")]
+        public async Task<IActionResult> Delete(int projectTaskId)
         {
-            var task = _db.ProjectTasks
+            var task = await _db.ProjectTasks
            .Include(t => t.Project)
-           .FirstOrDefault(t => t.ProjectTaskId == projectTaskId);
+           .FirstOrDefaultAsync(t => t.ProjectTaskId == projectTaskId);
 
             if (task == null)
             {
@@ -131,32 +152,32 @@ namespace lab_work.Areas.ProjectManagement.Controllers
 
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int projectTaskId)
+        public async Task<IActionResult> DeleteConfirmed(int projectTaskId)
         {
-            var task = _db.ProjectTasks.Find(projectTaskId);
+            var task = await _db.ProjectTasks.FindAsync(projectTaskId);
             if (task != null)
             {
                 _db.ProjectTasks.Remove(task);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Index", new { projectId = task.ProjectId });
             }
             return NotFound();
         }
 
-        //public async Task<IActionResult> Search(int projectId, string searchString)
-        //{
-        //    var taskQuery = _db.ProjectTasks.Where(t => t.ProjectId == projectId);
+        public async Task<IActionResult> Search(int projectId, string searchString)
+        {
+            var taskQuery = _db.ProjectTasks.Where(t => t.ProjectId == projectId);
 
-        //    if (!string.IsNullOrEmpty(searchString))
-        //    {
-        //        taskQuery = taskQuery.Where(t => t.Title.Contains(searchString)
-        //                                          || t.Description.Contains(searchString));
-        //    }
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                taskQuery = taskQuery.Where(t => t.Title.Contains(searchString)
+                                                  || t.Description.Contains(searchString));
+            }
 
-        //    var tasks = await taskQuery.ToListAsync();
-        //    ViewBag.ProjectId = projectId;
-        //    return View("Index", tasks);
-        //}
+            var tasks = await taskQuery.ToListAsync();
+            ViewBag.ProjectId = projectId;
+            return View("Index", tasks);
+        }
 
     }
 }

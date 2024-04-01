@@ -59,7 +59,7 @@
     }*@
 
 
-
+@*22222*@
 
 @model List<Project>
 
@@ -119,7 +119,7 @@
                                 </td>
 
                                 <td>
-                                    @await Component.InvokeAsync("ProjectSummary", new { projectId = project.ProjectId })
+                                    @await Component.InvokeAsync("ProjectSummary", new { projectId = obj.ProjectId })
                                 </td>
                                 <td>
                                     <div class="w-75 btn-group" role="group">
